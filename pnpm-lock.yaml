@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@langchain/openai':
+        specifier: ^0.1.2
+        version: 0.1.2(encoding@0.1.13)(langchain@0.2.5(@pinecone-database/pinecone@2.2.2)(encoding@0.1.13)(openai@4.49.1(encoding@0.1.13))(peggy@3.0.2))
       '@langchain/pinecone':
         specifier: ^0.0.7
         version: 0.0.7(langchain@0.2.5(@pinecone-database/pinecone@2.2.2)(encoding@0.1.13)(openai@4.49.1(encoding@0.1.13))(peggy@3.0.2))(openai@4.49.1(encoding@0.1.13))
