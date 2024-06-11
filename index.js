@@ -1,30 +1,37 @@
+import { Pinecone } from "@pinecone-database/pinecone";
+import { OpenAIEmbeddings } from "@langchain/openai";
+import { PineconeStore } from "@langchain/pinecone";
+import dotenv from "dotenv";
 import express from 'express';
 import cors from 'cors';
-import dotenv from "dotenv";
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 }
 
+const pinecone = new Pinecone();
+const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX);
+const vectorStore = await PineconeStore.fromExistingIndex(
+  new OpenAIEmbeddings(),
+  { pineconeIndex }
+);
+
 const app = express();
 const port = process.env.PORT || 3001;
 
-// CORS configuration
 const corsOptions = {
-  origin: '*', // Allows all origins
-  optionsSuccessStatus: 200 // response status for successful OPTIONS requests
+  origin: '*',
+  optionsSuccessStatus: 200
 };
 
-// Apply CORS middleware to handle CORS and preflight requests
 app.use(cors(corsOptions));
 
-// Routes
 app.get('/search', async (req, res) => {
   const { query, limit, metadata } = req.query;
   try {
     const searchQuery = query || '';
     const searchLimit = limit ? parseInt(limit, 10) : 10;
-    const metaDataFilter = metadata ? JSON.parse(metadata) : {};
+    const metaDataFilter   = metadata ? JSON.parse(metadata) : {};
 
     console.log(searchQuery, searchLimit, metaDataFilter);
     
@@ -35,7 +42,6 @@ app.get('/search', async (req, res) => {
   }
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port} and querying ${process.env.PINECONE_INDEX}`);
 });
