@@ -19,8 +19,13 @@ const vectorStore = await PineconeStore.fromExistingIndex(
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.options('*', cors()); 
-app.use(cors());
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200
+};
+
+app.options('*', cors(corsOptions)); 
+app.use(cors(corsOptions));
 
 app.get('/search', async (req, res) => {
   const { query, limit, metadata } = req.query;
