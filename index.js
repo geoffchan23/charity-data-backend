@@ -3,6 +3,7 @@ import { OpenAIEmbeddings } from "@langchain/openai";
 import { PineconeStore } from "@langchain/pinecone";
 import dotenv from "dotenv";
 import express from 'express';
+import cors from 'cors';
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
@@ -17,6 +18,8 @@ const vectorStore = await PineconeStore.fromExistingIndex(
 
 const app = express();
 const port = process.env.PORT || 3001;
+
+app.use(cors());
 
 app.get('/search', async (req, res) => {
   const { query, limit, metadata } = req.query;
