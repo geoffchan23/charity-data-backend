@@ -5,3 +5,6 @@
 /*.txt
 .env
 /client
+/utils/*.json
+/utils/*.txt
+/*.deprecated.*
